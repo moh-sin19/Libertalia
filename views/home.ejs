@@ -1,0 +1,15 @@
+<%- include('partials/page-start') %>
+
+<div class="feed">
+  <% if (posts.length === 0) { %>
+    <div class="feed-empty">
+      <p>No posts yet<% if (activeFilter !== 'all') { %> in this category<% } %>. Be the first to share on your profile!</p>
+    </div>
+  <% } else { %>
+    <% posts.forEach(function(post) { %>
+      <%- include('partials/post-card', { post: post, showFollow: true, currentUserId: currentUserId }) %>
+    <% }); %>
+  <% } %>
+</div>
+
+<%- include('partials/page-end') %>

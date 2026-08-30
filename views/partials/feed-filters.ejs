@@ -1,0 +1,12 @@
+<div class="feed-filters">
+  <a href="/" class="filter-btn <%= activeFilter === 'all' ? 'active' : '' %>" title="All posts">
+    <img src="/icons/home.png" alt="All">
+    <span>All</span>
+  </a>
+  <% categories.forEach(function(cat) { %>
+    <a href="/?category=<%= encodeURIComponent(cat) %>" class="filter-btn <%= activeFilter === cat ? 'active' : '' %>" title="<%= cat %>">
+      <img src="/icons/<%= categoryIcons[cat] %>" alt="<%= cat %>">
+      <span><%= cat %></span>
+    </a>
+  <% }); %>
+</div>

@@ -1,0 +1,43 @@
+<%- include('partials/page-start') %>
+
+<div class="search-page">
+  <h2 class="search-page-title">Search Posts</h2>
+  <p class="search-page-subtitle">Find community posts by item name</p>
+
+  <form action="/search" method="GET" class="search-form">
+    <input
+      type="search"
+      name="q"
+      value="<%= typeof query !== 'undefined' ? query : '' %>"
+      placeholder="Search by item name..."
+      class="search-input"
+      autofocus
+    >
+    <button type="submit" class="btn-search">
+      <img src="/icons/search.png" alt="" class="search-btn-icon">
+      Search
+    </button>
+  </form>
+
+  <% if (typeof query !== 'undefined' && query) { %>
+    <h3 class="search-results-heading">Results for "<%= query %>"</h3>
+    <div class="feed search-results">
+      <% if (posts.length === 0) { %>
+        <div class="feed-empty">
+          <p>No Posts found.</p>
+        </div>
+      <% } else { %>
+        <% posts.forEach(function(post) { %>
+          <%- include('partials/post-card', { post: post, showFollow: true, currentUserId: currentUserId }) %>
+        <% }); %>
+      <% } %>
+    </div>
+  <% } else { %>
+    <div class="search-hint">
+      <img src="/icons/search.png" alt="" class="search-hint-icon">
+      <p>Enter an item name above to search posts from the community.</p>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/page-end') %>

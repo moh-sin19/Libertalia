@@ -1,0 +1,61 @@
+<article class="post-card">
+  <div class="post-top-row">
+    <div class="post-author-row">
+      <div class="post-author"><%= post.name %></div>
+      <% if (post.location) { %>
+        <div class="post-location-inline">
+          <img src="/icons/location.png" alt="" class="post-inline-icon">
+          <a href="<%= mapsUrl(post.location) %>" target="_blank" rel="noopener noreferrer"><%= post.location %></a>
+        </div>
+      <% } %>
+      <% if (typeof showFollow !== 'undefined' && showFollow && post.author_id && post.author_id !== currentUserId) { %>
+        <% if (post.isFollowing) { %>
+          <form action="/unfollow/<%= post.author_id %>" method="POST" class="post-action-form">
+            <button type="submit" class="btn-follow following">Following</button>
+          </form>
+        <% } else { %>
+          <form action="/follow/<%= post.author_id %>" method="POST" class="post-action-form">
+            <button type="submit" class="btn-follow">Follow</button>
+          </form>
+        <% } %>
+      <% } %>
+    </div>
+    <div class="post-top-actions">
+      <% if (typeof showDelete !== 'undefined' && showDelete && post.id) { %>
+        <form action="/posts/<%= post.id %>/delete" method="POST" class="post-action-form" onsubmit="return confirm('Delete this post?');">
+          <button type="submit" class="btn-delete" title="Delete post">×</button>
+        </form>
+      <% } %>
+      <div class="post-date"><%= new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+    </div>
+  </div>
+
+  <div class="post-title-row">
+    <h3 class="post-title"><%= post.title %></h3>
+    <img src="/icons/<%= getCategoryIcon(post.category) %>" alt="<%= post.category %>" class="post-category-icon" title="<%= post.category %>">
+  </div>
+
+  <% if (post.product_image) { %>
+    <img src="<%= post.product_image %>" alt="<%= post.title %>" class="post-product-image">
+  <% } %>
+
+  <div class="post-rating-row">
+    <div class="post-stars"><%- renderStars(post.rating) %></div>
+    <% if (post.purchase_link) { %>
+      <a href="<%= post.purchase_link %>" target="_blank" rel="noopener noreferrer" class="post-purchase-link" title="View purchase link">
+        <img src="/icons/link.png" alt="Purchase link" class="post-inline-icon">
+      </a>
+    <% } %>
+  </div>
+
+  <% if (post.description) { %>
+    <p class="post-description"><%= post.description %></p>
+  <% } %>
+
+  <% if (post.favorite_things) { %>
+    <div class="post-favorites">
+      <strong>Favorite Things</strong>
+      <%= post.favorite_things %>
+    </div>
+  <% } %>
+</article>

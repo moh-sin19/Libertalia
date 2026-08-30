@@ -1,0 +1,15 @@
+<%- include('partials/page-start') %>
+
+<div class="shuffle-page">
+  <p class="shuffle-intro">A random post for inspiration — refresh by clicking Shuffle in the sidebar.</p>
+
+  <% if (!post) { %>
+    <div class="feed-empty">
+      <p>No posts in the database yet. Create one from your profile!</p>
+    </div>
+  <% } else { %>
+    <%- include('partials/post-card', { post: post, showFollow: true, currentUserId: currentUserId }) %>
+  <% } %>
+</div>
+
+<%- include('partials/page-end') %>

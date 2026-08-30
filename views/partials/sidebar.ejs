@@ -1,0 +1,47 @@
+<aside class="sidebar collapsed" id="sidebar">
+  <nav class="sidebar-nav">
+    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
+      <img src="/icons/menus.png" alt="Menu">
+    </button>
+
+    <% if (typeof user !== 'undefined' && user) { %>
+      <div class="sidebar-main-links">
+        <a href="/" class="sidebar-link <%= title === 'Home' ? 'active' : '' %>" title="Home">
+          <img src="/icons/home.png" alt="" class="sidebar-icon">
+          <span class="sidebar-label">Home</span>
+        </a>
+        <a href="/search" class="sidebar-link <%= title === 'Search' ? 'active' : '' %>" title="Search">
+          <img src="/icons/search.png" alt="" class="sidebar-icon">
+          <span class="sidebar-label">Search</span>
+        </a>
+        <a href="/shuffle" class="sidebar-link <%= title === 'Shuffle' ? 'active' : '' %>" title="Shuffle">
+          <img src="/icons/shuffle.png" alt="" class="sidebar-icon">
+          <span class="sidebar-label">Shuffle</span>
+        </a>
+        <a href="/profile" class="sidebar-link <%= title === 'Profile' ? 'active' : '' %>" title="Profile">
+          <% if (user.profile_picture) { %>
+            <img src="<%= user.profile_picture %>" alt="" class="sidebar-icon sidebar-icon-avatar">
+          <% } else { %>
+            <img src="/icons/user.png" alt="" class="sidebar-icon">
+          <% } %>
+          <span class="sidebar-label">Profile</span>
+        </a>
+      </div>
+      <a href="/logout" class="sidebar-link sidebar-link-bottom" title="Logout">
+        <img src="/icons/exit.png" alt="" class="sidebar-icon">
+        <span class="sidebar-label">Logout</span>
+      </a>
+    <% } else { %>
+      <div class="sidebar-main-links">
+        <a href="/login" class="sidebar-link <%= title === 'Login' ? 'active' : '' %>" title="Login">
+          <img src="/icons/login.png" alt="" class="sidebar-icon">
+          <span class="sidebar-label">Login</span>
+        </a>
+        <a href="/register" class="sidebar-link <%= title === 'Register' ? 'active' : '' %>" title="Register">
+          <img src="/icons/register.png" alt="" class="sidebar-icon">
+          <span class="sidebar-label">Register</span>
+        </a>
+      </div>
+    <% } %>
+  </nav>
+</aside>

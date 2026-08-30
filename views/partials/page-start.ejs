@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — Libertalia</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <%- include('sidebar') %>
+
+    <div class="main-content">
+      <header class="site-header<%= typeof showFeedFilters !== 'undefined' && showFeedFilters ? ' site-header-with-filters' : '' %>">
+        <div class="site-header-top">
+          <a href="<%= typeof user !== 'undefined' && user ? '/' : '/login' %>" class="site-header-link">
+            <img src="/icons/anchor.png" alt="" class="site-logo-icon">
+            <h1 class="site-title">Libertalia</h1>
+          </a>
+        </div>
+        <% if ((typeof showFeedFilters !== 'undefined' && showFeedFilters) || title === 'Home') { %>
+          <% var filter = typeof activeFilter !== 'undefined' ? activeFilter : 'all'; %>
+          <div class="feed-filters">
+            <a href="/" class="filter-btn <%= filter === 'all' ? 'active' : '' %>" title="All posts">
+              <img src="/icons/home.png" alt="All">
+              <span>All</span>
+            </a>
+            <% categories.forEach(function(cat) { %>
+              <a href="/?category=<%= encodeURIComponent(cat) %>" class="filter-btn <%= filter === cat ? 'active' : '' %>" title="<%= cat %>">
+                <img src="/icons/<%= categoryIcons[cat] %>" alt="<%= cat %>">
+                <span><%= cat %></span>
+              </a>
+            <% }); %>
+          </div>
+        <% } %>
+      </header>
+
+      <main class="page-content<%= title === 'Profile' ? ' page-content--profile' : '' %>">

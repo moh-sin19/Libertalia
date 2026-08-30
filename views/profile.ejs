@@ -1,0 +1,136 @@
+<%- include('partials/page-start') %>
+
+<div class="profile-page">
+  <% if (success) { %>
+    <div class="alert alert-success"><%= success %></div>
+  <% } %>
+  <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <div class="profile-header">
+    <form action="/profile/picture" method="POST" enctype="multipart/form-data" id="profileUploadForm">
+      <input type="file" name="profilePicture" id="profilePictureInput" accept="image/*" hidden>
+      <label for="profilePictureInput" class="profile-picture-label" title="Click to change profile picture">
+        <% if (user.profile_picture) { %>
+          <img src="<%= user.profile_picture %>" alt="Profile picture" class="profile-picture">
+        <% } else { %>
+          <div class="profile-picture-placeholder">
+            <img src="/icons/user.png" alt="Default profile">
+          </div>
+        <% } %>
+      </label>
+    </form>
+
+    <div class="profile-stats">
+      <h2><%= user.name %></h2>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-number"><%= followerCount %></span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number"><%= followingCount %></span>
+          <span class="stat-label">Following</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number"><%= posts.length %></span>
+          <span class="stat-label">Posts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-posts-header">
+    <h3>My Posts</h3>
+    <button class="btn-add-post" id="openPostModal" title="Add a new post">
+      <img src="/icons/plus.png" alt="Add post" class="btn-add-post-icon">
+    </button>
+  </div>
+
+  <div class="profile-posts-grid">
+    <% if (posts.length === 0) { %>
+      <div class="feed-empty">
+        <p>No posts yet. Tap the + button to share your first purchase!</p>
+      </div>
+    <% } else { %>
+      <% posts.forEach(function(post) { %>
+        <%- include('partials/post-card', {
+          post: Object.assign({}, post, { name: user.name, author_id: user.id }),
+          showDelete: true,
+          currentUserId: currentUserId
+        }) %>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+
+<!-- New Post Modal -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <h3>Post</h3>
+    <form action="/posts" method="POST" enctype="multipart/form-data" id="postForm">
+      <div class="form-group">
+        <label>Category</label>
+        <div class="category-buttons">
+          <% categories.forEach(function(cat) { %>
+            <label class="category-btn">
+              <input type="radio" name="category" value="<%= cat %>" required>
+              <img src="/icons/<%= categoryIcons[cat] %>" alt="">
+              <span><%= cat %></span>
+            </label>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="title">Item Name</label>
+        <input type="text" id="title" name="title" required placeholder="What did you buy?">
+      </div>
+
+      <div class="form-group">
+        <label for="productImage">Product Image <span class="required-mark">*</span></label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" required>
+      </div>
+
+      <div class="form-group">
+        <label for="rating">Rating</label>
+        <div class="star-rating">
+          <% for (let i = 5; i >= 1; i--) { %>
+            <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" required>
+            <label for="star<%= i %>" title="<%= i %> star<%= i > 1 ? 's' : '' %>">★</label>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="purchase_link">Purchase Link</label>
+        <input type="url" id="purchase_link" name="purchase_link" placeholder="https://...">
+      </div>
+
+      <div class="form-group location-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" placeholder="Search for a place..." autocomplete="off">
+        <ul class="location-suggestions" id="locationSuggestions"></ul>
+        <p class="form-hint">Start typing to search — linked to Google Maps on your post.</p>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="Tell us about your purchase..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="favorite_things">Favorite Things</label>
+        <textarea id="favorite_things" name="favorite_things" placeholder="What do you love most about it?"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-cancel" id="closePostModal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/page-end') %>
